@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from typing import List, Optional, Dict
 from ortools.sat.python import cp_model
 
+
 app = FastAPI(title="RF-22 — Otimização de Agendamentos", version="1.0.0")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
