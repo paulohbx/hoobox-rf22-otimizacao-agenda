@@ -79,10 +79,15 @@ def otimizar(req: OtimizarRequest):
                 model.add(sum(x[i, s] for i in idx) <= 1)
 
     # RESTRIÇÃO 4: equipamento obrigatório deve estar disponível na sala
+    # Se a sala nao tem equipamentos cadastrados, ignora a restricao (match permissivo)
     for c, cir in enumerate(cirurgias):
         for s, sala in enumerate(salas):
+            if len(sala.equipamentos) == 0:
+                continue  # sala sem equipamentos cadastrados aceita qualquer cirurgia
+            sala_equips = [e.split(" (")[0].strip().lower() for e in sala.equipamentos]
             for eq in cir.equipamentos:
-                if eq not in sala.equipamentos:
+                eq_norm = eq.split(" (")[0].strip().lower()
+                if eq_norm not in sala_equips:
                     model.add(x[c, s] == 0)
 
     # SOFT: preferência de sala por especialidade
